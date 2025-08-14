@@ -1,0 +1,33 @@
+name: "CD Pipeline"
+
+on:
+  workflow_run:
+    workflows: [Continous Integration Pipline]
+    types:
+      - completed
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hoted
+    steps:
+      - name: "Install Bun"
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+      - name: "Check Bun version"
+        run: bun --version
+
+      - name: "Clone the repository"
+        uses: actions/checkout@v2
+
+      - name: "List directories"
+        run: ls
+
+      - name: "Install dependencies"
+        run: npm install
+
+      - name: "Deploy on aws"
+        run: pm2 start "next start" --name next-app --interpreter bash

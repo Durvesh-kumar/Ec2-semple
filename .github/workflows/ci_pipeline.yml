@@ -1,0 +1,46 @@
+name: "Continous Integration Pipline"
+on: 
+    push:
+        branches: 
+            - main
+            # - master
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+
+            - name: "Bun Install"
+              run: |
+               curl -fsSL https://bun.sh/install | bash
+               echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+            - name: "Check Bun version"
+              run: bun --version
+
+            - name: "List directories"
+              run: ls
+
+            - name: "Install dependencies with Bun"
+              run: bun install
+
+            - name: "List directories"
+              run: ls
+
+            - name: "Run lint"
+              run: bun run lint
+
+            - name: "Run tests"
+              run: bun test
+
+            - name: "Run build"
+              run: bun run build
+
+            - name: "Upload product-ready build files"
+              uses: actions/upload-artifact@v4
+              with:
+                name: build-output
+                path: custom_dist/
+                if-no-files-found: error
+
