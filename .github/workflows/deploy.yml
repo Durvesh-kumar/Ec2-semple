@@ -27,5 +27,5 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
 
-      - name: "Deploy on aws"
-        run: pm2 start "next start" --name next-app --interpreter bash
+      - name: "Deploy on AWS"
+        run: pm2 start bun --name next-app -- start
