@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hoted
+    runs-on: self-hosted
     steps:
       - name: "Install Bun"
         run: |
